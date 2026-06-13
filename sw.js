@@ -1,7 +1,10 @@
-const CACHE = "mtv-cache-v1";
+const CACHE = "mtv-cache-v2";
 const ASSETS = [
   "/",
   "/index.html",
+  "/style.css",
+  "/app.js",
+  "/channels.json",
   "/manifest.json",
   "/assets/icon.png",
   "/assets/splash-icon.png",
