@@ -1,0 +1,233 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #001009;
+    --card: #002030;
+    --active: #238540;
+    --text: #ffffff;
+    --muted: #8a8fa8;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
+}
+
+.container {
+    min-height: 100vh;
+}
+
+.player-section {
+    position: relative;
+    background: #001020;
+    height: 33vh;
+    min-height: 220px;
+}
+
+.video-js {
+    width: 100%;
+    height: 100%;
+}
+
+.loading {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 16, 32, 0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 20;
+}
+
+.spinner {
+    width: 42px;
+    height: 42px;
+    border: 4px solid rgba(255,255,255,0.15);
+    border-top-color: #59c029;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.channels {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+}
+
+.channel {
+    background: var(--card);
+    border-radius: 10px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+    transition: .2s;
+}
+
+.channel:hover {
+    transform: translateY(-2px);
+}
+
+.channel.active {
+    background: var(--active);
+}
+
+.channel img {
+    width: 100px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.channel span {
+    text-align: center;
+    font-size: 14px;
+    padding: 0 8px;
+}
+
+.footer {
+    padding: 20px;
+    text-align: center;
+}
+
+.copyright {
+    font-size: 12px;
+}
+
+.developer {
+    margin-top: 4px;
+    color: #888;
+    font-size: 11px;
+}
+
+.socials {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.socials img {
+    width: 24px;
+    height: 24px;
+}
+
+.pwa-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    padding: 16px 20px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 100;
+    border-top: 2px solid var(--active);
+    transform: translateY(100%);
+    transition: transform .3s ease;
+}
+
+.pwa-banner.show {
+    display: flex;
+    transform: translateY(0);
+}
+
+.pwa-banner .info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.pwa-banner .info img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+}
+
+.pwa-banner .info div {
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+.pwa-banner .info small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.pwa-banner .actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.pwa-banner button {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.pwa-banner .btn-install {
+    background: var(--active);
+    color: #fff;
+}
+
+.pwa-banner .btn-close {
+    background: transparent;
+    color: var(--muted);
+}
+
+@media (max-width: 480px) {
+    .pwa-banner {
+        flex-wrap: wrap;
+    }
+    .pwa-banner .info img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .channels {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .channel {
+        min-height: 100px;
+    }
+
+    .channel img {
+        width: 80px;
+        height: 50px;
+    }
+
+    .channel span {
+        font-size: 12px;
+    }
+}

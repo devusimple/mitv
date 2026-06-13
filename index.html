@@ -9,167 +9,18 @@
 
 <title>MTV Player</title>
 
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#238540">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="/assets/icon.png">
+
 <link
     href="https://vjs.zencdn.net/8.23.4/video-js.css"
     rel="stylesheet"
 />
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --bg: #001009;
-    --card: #002030;
-    --active: #238540;
-    --text: #ffffff;
-    --muted: #8a8fa8;
-}
-
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        sans-serif;
-}
-
-.container {
-    min-height: 100vh;
-}
-
-.player-section {
-    position: relative;
-    background: #001020;
-    height: 33vh;
-    min-height: 220px;
-}
-
-.video-js {
-    width: 100%;
-    height: 100%;
-}
-
-.loading {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 16, 32, 0.85);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 20;
-}
-
-.spinner {
-    width: 42px;
-    height: 42px;
-    border: 4px solid rgba(255,255,255,0.15);
-    border-top-color: #59c029;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.channels {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 12px;
-}
-
-.channel {
-    background: var(--card);
-    border-radius: 10px;
-    min-height: 120px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    gap: 8px;
-    transition: .2s;
-}
-
-.channel:hover {
-    transform: translateY(-2px);
-}
-
-.channel.active {
-    background: var(--active);
-}
-
-.channel img {
-    width: 100px;
-    height: 60px;
-    object-fit: contain;
-}
-
-.channel span {
-    text-align: center;
-    font-size: 14px;
-    padding: 0 8px;
-}
-
-.footer {
-    padding: 20px;
-    text-align: center;
-}
-
-.copyright {
-    font-size: 12px;
-}
-
-.developer {
-    margin-top: 4px;
-    color: #888;
-    font-size: 11px;
-}
-
-.socials {
-    margin-top: 12px;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-}
-
-.socials img {
-    width: 24px;
-    height: 24px;
-}
-
-@media (max-width: 600px) {
-    .channels {
-        gap: 8px;
-        padding: 8px;
-    }
-
-    .channel {
-        min-height: 100px;
-    }
-
-    .channel img {
-        width: 80px;
-        height: 50px;
-    }
-
-    .channel span {
-        font-size: 12px;
-    }
-}
-</style>
+<link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -235,134 +86,22 @@ body {
 
 </div>
 
+<div class="pwa-banner" id="pwaBanner">
+    <div class="info">
+        <img src="/assets/icon.png" alt="MTV Player">
+        <div>
+            <strong>MTV Player</strong><br>
+            <small>Install for a better experience</small>
+        </div>
+    </div>
+    <div class="actions">
+        <button class="btn-close" id="pwaClose">Not now</button>
+        <button class="btn-install" id="pwaInstall">Install</button>
+    </div>
+</div>
+
 <script src="https://vjs.zencdn.net/8.23.4/video.min.js"></script>
-
-<script>
-const CHANNELS = [
-    {
-        name: "FIFA-1",
-        logo: "./assets/logos/fifa.png",
-        url: "http://172.16.29.3:8090/hls/tsportshd3rd.m3u8",
-    },
-    {
-        name: "T SPORTS",
-        logo: "./assets/logos/t-sports.png",
-        url: "http://172.16.29.3:8090/hls/tsportshd.m3u8",
-    },
-    {
-        name: "PTV SPORTS",
-        logo: "./assets/logos/ptv.png",
-        url: "http://172.16.29.3:8090/hls/ptvsportshd.m3u8",
-    },
-    {
-        name: "A SPORTS",
-        logo: "./assets/logos/a-sports.png",
-        url: "http://172.16.29.3:8090/hls/ASportsHD.m3u8",
-    },
-    {
-        name: "STAR SPORTS SELECT 2",
-        logo: "./assets/logos/sss-2.png",
-        url: "http://172.16.29.3:8090/hls/StarSportsSelect2HD.m3u8",
-    },
-    {
-        name: "STAR SPORTS 2 HD",
-        logo: "./assets/logos/ss-2.png",
-        url: "http://172.16.29.3:8090/hls/StarSports2HD.m3u8",
-    },
-    {
-        name: "STAR SPORTS 1 HD",
-        logo: "./assets/logos/ss-1.png",
-        url: "http://172.16.29.3:8090/hls/SonyTen5HD.m3u8",
-    },
-    {
-        name: "SONY TEN 3 HINDI",
-        logo: "./assets/logos/sos-2.png",
-        url: "http://172.16.29.3:8090/hls/SonyTen2hd.m3u8",
-    },
-    {
-        name: "SONY SPORTS 5",
-        logo: "./assets/logos/sos-2.png",
-        url: "http://172.16.29.3:8090/hls/SonyTen3hd.m3u8",
-    },
-];
-
-document.getElementById("year").textContent =
-    new Date().getFullYear();
-
-const loading =
-    document.getElementById("loading");
-
-const player = videojs("player", {
-    fluid: true,
-    responsive: true,
-    liveui: true,
-    autoplay: true,
-    preload: "auto",
-    controls: true,
-});
-
-function showLoading() {
-    loading.style.display = "flex";
-}
-
-function hideLoading() {
-    loading.style.display = "none";
-}
-
-player.on("waiting", showLoading);
-player.on("loadstart", showLoading);
-player.on("playing", hideLoading);
-player.on("canplay", hideLoading);
-
-function loadChannel(url) {
-    showLoading();
-
-    player.src({
-        src: url,
-        type: "application/x-mpegURL",
-    });
-
-    player.play().catch(() => {});
-}
-
-const channelsContainer =
-    document.getElementById("channels");
-
-CHANNELS.forEach((channel, index) => {
-
-    const el =
-        document.createElement("div");
-
-    el.className =
-        "channel" +
-        (index === 0 ? " active" : "");
-
-    el.innerHTML = `
-        <img
-            src="${channel.logo}"
-            alt="${channel.name}"
-        />
-        <span>${channel.name}</span>
-    `;
-
-    el.addEventListener("click", () => {
-
-        document
-            .querySelectorAll(".channel")
-            .forEach(x =>
-                x.classList.remove("active")
-            );
-
-        el.classList.add("active");
-
-        loadChannel(channel.url);
-    });
-
-    channelsContainer.appendChild(el);
-});
-
-loadChannel(CHANNELS[0].url);
-</script>
+<script src="/app.js"></script>
 
 </body>
 </html>
